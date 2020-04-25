@@ -1,1 +1,1 @@
-web: sh -c 'python app.py'
+web: sh -c 'flask run'

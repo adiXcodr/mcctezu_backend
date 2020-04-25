@@ -3,6 +3,8 @@ from flask_cors import CORS
 import pymongo
 import run_model
 import constants as CONST
+from waitress import serve
+import os
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -15,4 +17,7 @@ def check_status():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="localhost", port="9999", debug=True, use_reloader=True)
+else:
+    port = int(os.environ.get('PORT', 33507))
+    serve(app,port=port)
