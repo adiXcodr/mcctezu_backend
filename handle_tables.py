@@ -12,7 +12,15 @@ def create_table():
 
     coll = const.mydb[coll_name]
     #Inserting Columns
-    columns = { "_id": None, "name": None, "dept": None, "linkedin": None, "phone": None, "email": None, "image": None ,"interest": None }
+    col_len=int(input('Enter the number of columns : '))
+    print('Enter column names : ')
+    col_names=[]
+    for i in range(col_len):
+      col_names.append(input())
+    columns={}
+    columns["_id"]=None
+    for i in col_names: 
+      columns[i] = None
     x = coll.insert_one(columns)
 
 def delete_table():
