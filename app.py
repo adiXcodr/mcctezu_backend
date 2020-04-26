@@ -16,8 +16,8 @@ def check_status():
     return jsonify({CONST.STATUS: CONST.SUCCESS, CONST.DATA: None})
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  #Local
     app.run(host="localhost", port="9999", debug=True, use_reloader=True)
-else:
+else:     #Production (Heroku)
     port = int(os.environ.get('PORT', 33507))
     serve(app,port=port)

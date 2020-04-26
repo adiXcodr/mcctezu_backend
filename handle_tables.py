@@ -12,7 +12,7 @@ def create_table():
 
     coll = const.mydb[coll_name]
     #Inserting Columns
-    columns = { "_id": None, "name": None, "dept": None }
+    columns = { "_id": None, "name": None, "dept": None, "linkedin": None, "phone": None, "email": None, "image": None ,"interest": None }
     x = coll.insert_one(columns)
 
 def delete_table():
