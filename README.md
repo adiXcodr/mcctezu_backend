@@ -113,6 +113,7 @@ Example input for ADD NOTIFICATIONS :
 INPUT:
 ```json
     {
+        "_id":3,
         "date":"27/04/2020",
         "title":"Events",
         "notification":"sample text"
@@ -127,7 +128,7 @@ INPUT:
 ```json
     {
         "field": {
-            "title": "Events"
+            "_id": 3
         },
         "update": {
             "title": "Notifications"
@@ -143,11 +144,10 @@ INPUT:
 ```json
     {
 
-        "date": "27/04/2020"
+        "_id": 3
     
     }
 ```
-=======
 
 <hr>
 
