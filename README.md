@@ -41,22 +41,66 @@ Follow the steps for working on this repository strictly :
 2. With LIVE Heroku Server, eg: https://mcctezu-backend.herokuapp.com/run-model/add_members
 3. Test the API with POSTMAN. Example Input for add_members:  
 
-{ 
+```json
+    { 
+        "_id": 1, 
+        "name": "Adittya Dey", 
+        "dept": "CSE", 
+        "linkedin": "somelink", 
+        "phone": "somenumber", 
+        "email": "someemail", 
+        "image": "somelink",
+        "interest": "Full Stack"
+    }
+```
 
-    "_id": 1, 
-    "name": "Adittya Dey", 
-    "dept": "CSE", 
-    "linkedin": "somelink", 
-    "phone": "somenumber", 
-    "email": "someemail", 
-    "image": "somelink",
-    "interest": "Full Stack"
-    
-}
 
-<br> 
+4. Test the API with POSTMAN. Example for GET EVENTS :  
+* Set the URL TO `http://localhost:9999/run-model/get_events`
+OR `http://localhost:9999/run-model/get_events/` to get all the records.
+* Set the URL TO `http://localhost:9999/run-model/get_events/<event_name>` to get record for specified event only. 
 
-### Author
+5. Test the API with POSTMAN. Example input for ADD EVENTS :
+* Set the URL TO `http://localhost:9999/run-model/add_events`
+INPUT:
+```json
+    {
+        "evt_name":"Codeathon",
+        "evt_org":"MCC_TEZU",
+        "evt_date":"04/09/2020",
+        "evt_time":"3:00pm",
+        "evt_venue":"Dean's Building",
+        "evt_image":"none"
+    }
+```
+6. Test the API with POSTMAN. Example input for UPDATE EVENTS :
+* Set the URL TO `http://localhost:9999/run-model/update_events`
+INPUT:
+```json
+    {
+        "field": {
+            "evt_name": "Code Hack"
+        },
+        "field_update": {
+            "evt_org": "MCC_TEZU"
+        }
+    }
+```
+In `field` attribute give the column name to identify the record to update. In `field_update` specify the column to be updated and give the new value to it.
+
+7. Test the API with POSTMAN. Example input for DELETE EVENTS :
+* Set the URL TO `http://localhost:9999/run-model/delete_events`
+INPUT:
+```json
+    {
+    "evt_name":"Codathon"
+    }
+```
+Specify the column to identify and delete the record.
+
+<hr>
+
+## Author
 
 #### [Adittya Dey](https://github.com/adiXcodr)
 
