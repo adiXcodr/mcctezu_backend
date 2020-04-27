@@ -18,6 +18,7 @@ def handle_add_members():
     response = jsonify({"status": status_response,"data":"No data"})
     return response
 
+
 @bp.route('/update_members',methods=['POST'])
 def handle_edit_members():
     member=const.mydb['members']
@@ -63,7 +64,6 @@ def handle_delete_members():
         output='No Record Found'
     return jsonify({"status":status_response,"result":output})
     
-
 
 #-------------EVENTS HANDLER ROUTES-------------------
 
@@ -146,3 +146,62 @@ def delete_event_handler():
         output='No Record Found'
     return jsonify({"status":status_response,"result":output})
     
+#-----------Notifications Routes-----------------
+
+@bp.route("/notifications/add",methods=["POST"])
+def add_notifications():
+    jn=request.json
+    notifications = const.mydb['notifications']
+    x = notifications.insert_one(jn)
+    status_response = x.inserted_id
+    print(status_response)
+    if(status_response):
+        status_response='Success'
+    else:
+        status_response='Failure'
+    response = jsonify({"status": status_response,"data":"No Data"})
+    return response
+
+@bp.route("/notifications/delete_one",methods=["DELETE"])
+def delete_one():
+    jn=request.json
+    notifications = const.mydb['notifications']
+    if(notifications.find_one(jn)):
+        status_response = notifications.delete_one(jn)
+        if(status_response):
+            status_response="Deleted"
+        else:
+            status_response="Failure"
+        return jsonify({"status":status_response,"data":"nodata"})
+    else:
+        return jsonify({"status":"No Record Found"})
+
+@bp.route("/notifications/delete_many",methods=["DELETE"])
+def delete_many():
+    jn=request.json
+    notifications = const.mydb['notifications']
+    if(notifications.find_one(jn)):
+        status_response = notifications.delete_many(jn)
+        if(status_response):
+            status_response="Deleted"
+        else:
+            status_response="Failure"
+        return jsonify({"status":status_response,"data":"nodata"})
+    else:
+        return jsonify({"status":"No Record Found"})
+
+
+@bp.route("/notifications/update",methods=["PUT"])
+def update():
+    field=request.json
+    notifications = const.mydb['notifications']
+    if(notifications.find_one({"_id":field["_id"]})):
+        status_response = notifications.update_one({"_id":field["_id"]},{"$set":field})
+        if(status_response):
+            status_response="Updated"
+        else:
+            status_response="Failure"
+        return jsonify({"status":status_response,"data":"nodata"})
+    else:
+        return jsonify({"status":"No Record Found"})
+        

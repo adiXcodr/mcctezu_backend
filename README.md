@@ -108,13 +108,50 @@ INPUT:
 ```
 Specify the column to identify and delete the record.
 
+Example input for ADD NOTIFICATIONS :
+* Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/notifications/add`
+INPUT:
+```json
+    {
+        "_id":3,
+        "date":"27/04/2020",
+        "title":"Events",
+        "notification":"sample text"
+    }
+```
+
+Example input for UPDATE NOTIFICATIONS :
+* Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/notifications/update` to Update Single Record 
+
+INPUT:
+```json
+    {
+        
+        "_id": 3,
+       "title": "Notifications"//new data
+        
+    }
+```
+
+In `field` attribute give the column name to identify the record to update. In `update` specify the column to be updated and give the new value to it.
+
+Example input for UPDATE NOTIFICATIONS :
+* Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/notifications/delete_one` to Delete Single Record OR
+Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/notifications/delete_many` to Delete More Than One Records
+INPUT:
+```json
+    {
+
+        "_id": 3
+    
+    }
+```
+
 <hr>
 
 ## Author
 
 #### [Adittya Dey](https://github.com/adiXcodr)
-
 [<img src="https://image.flaticon.com/icons/svg/185/185964.svg" width="35" padding="10">](https://www.linkedin.com/in/adittya-dey-3966b916b/)
 [<img src="https://image.flaticon.com/icons/svg/185/185981.svg" width="35" padding="10">](https://www.facebook.com/adittya.dey.3)
 [<img src="https://image.flaticon.com/icons/svg/185/185985.svg" width="35" padding="10">](https://www.instagram.com/adixdey/)
-
