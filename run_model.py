@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, request
 import pymongo
 import constants as const
-import json
 
 bp = Blueprint("run_model", __name__)
 
@@ -65,8 +64,6 @@ def handle_delete_members():
         output='No Record Found'
     return jsonify({"status":status_response,"result":output})
     
-
-
 
 #-------------EVENTS HANDLER ROUTES-------------------
 
@@ -194,28 +191,12 @@ def delete_many():
         return jsonify({"status":"No Record Found"})
 
 
-@bp.route("/notifications/update_one",methods=["PUT"])
-def update_one():
-    field=request.json["field"]
-    update=request.json['update']
+@bp.route("/notifications/update",methods=["PUT"])
+def update():
+    field=request.json
     notifications = const.mydb['notifications']
-    if(notifications.find_one(field)):
-        status_response = notifications.update_one(field,{"$set":update})
-        if(status_response):
-            status_response="Updated"
-        else:
-            status_response="Failure"
-        return jsonify({"status":status_response,"data":"nodata"})
-    else:
-        return jsonify({"status":"No Record Found"})
-        
-@bp.route("/notifications/update_many",methods=["PUT"])
-def update_many():
-    field=request.json["field"]
-    update=request.json['update']
-    notifications = const.mydb['notifications']
-    if(notifications.find_one(field)):
-        status_response = notifications.update_many(field,{"$set":update})
+    if(notifications.find_one({"_id":field["_id"]})):
+        status_response = notifications.update_one({"_id":field["_id"]},{"$set":field})
         if(status_response):
             status_response="Updated"
         else:

@@ -121,20 +121,18 @@ INPUT:
 ```
 
 Example input for UPDATE NOTIFICATIONS :
-* Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/notifications/update_one` to Update Single Record OR
-Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/notifications/update_many` to Update More Than One Records
+* Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/notifications/update` to Update Single Record 
 
 INPUT:
 ```json
     {
-        "field": {
-            "_id": 3
-        },
-        "update": {
-            "title": "Notifications"
-        }
+        
+        "_id": 3,
+       "title": "Notifications"//new data
+        
     }
 ```
+
 In `field` attribute give the column name to identify the record to update. In `update` specify the column to be updated and give the new value to it.
 
 Example input for UPDATE NOTIFICATIONS :
