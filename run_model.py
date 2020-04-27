@@ -4,19 +4,65 @@ import constants as const
 
 bp = Blueprint("run_model", __name__)
 
+#-------------MEMBERS HANDLER ROUTES-------------------
 
 @bp.route("/add_members",methods=["POST"])
 def handle_add_members():
     jn=request.json
     coll = const.mydb['members']
-    x = coll.insert_one(jn)
-    status_response = x.inserted_id
-    if(isinstance(status_response, int)):
-        status_response='Success'
+    status_response = coll.insert_one(jn)
+    if (status_response):
+            status_response="Success"
     else:
-        status_response='Failure'
+            status_response="Failure"
     response = jsonify({"status": status_response,"data":"No data"})
     return response
+
+@bp.route('/update_members',methods=['POST'])
+def handle_edit_members():
+    member=const.mydb['members']
+    jn=request.json
+    member_id=jn["_id"]
+    print(member_id)
+    search={}
+    search["_id"]=member_id
+    search_result=member.find_one(search)
+    if (search_result):
+        output='Record Found'
+        delete=member.delete_one(search_result)
+        x = member.insert_one(jn)
+        status_response = x
+        if (status_response):
+            status_response="Success"
+        else:
+            status_response="Failure"
+    else:
+        status_response="Failure"
+        output='No Record Found'
+    return jsonify({"status":status_response,"result":output})
+
+@bp.route('/delete_members',methods=['POST'])
+def handle_delete_members():
+    member=const.mydb['members']
+    jn=request.json
+    member_id=jn["_id"]
+    print(member_id)
+    search={}
+    search["_id"]=member_id
+    search_result=member.find_one(search)
+    if (search_result):
+        output='Record Found'
+        delete=member.delete_one(search_result)
+        status_response = delete
+        if (status_response):
+            status_response="Success"
+        else:
+            status_response="Failure"
+    else:
+        status_response="Failure"
+        output='No Record Found'
+    return jsonify({"status":status_response,"result":output})
+    
 
 
 #-------------EVENTS HANDLER ROUTES-------------------

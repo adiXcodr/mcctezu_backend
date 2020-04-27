@@ -39,7 +39,9 @@ Follow the steps for working on this repository strictly :
 
 1. Locally, eg: http://localhost:9999/run-model/add_members
 2. With LIVE Heroku Server, eg: https://mcctezu-backend.herokuapp.com/run-model/add_members
-3. Test the API with POSTMAN. Example Input for add_members:  
+3. Test the API with POSTMAN. 
+
+Example Input for add_members and edit members (ALL FIELDS MUST BE SENT):  
 
 ```json
     { 
@@ -54,14 +56,22 @@ Follow the steps for working on this repository strictly :
     }
 ```
 
+Example Input for delete members (Send ID):  
 
-4. Test the API with POSTMAN. Example for GET EVENTS :  
-* Set the URL TO `http://localhost:9999/run-model/get_events`
-OR `http://localhost:9999/run-model/get_events/` to get all the records.
-* Set the URL TO `http://localhost:9999/run-model/get_events/<event_name>` to get record for specified event only. 
+```json
+    { 
+        "_id": 1
+    }
+```
 
-5. Test the API with POSTMAN. Example input for ADD EVENTS :
-* Set the URL TO `http://localhost:9999/run-model/add_events`
+
+Example for GET EVENTS :  
+* Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/get_events`
+OR `https://mcctezu-backend.herokuapp.com/run-model/get_events/` to get all the records.
+* Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/get_events/<event_name>` to get record for specified event only. 
+
+Example input for ADD EVENTS :
+* Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/add_events`
 INPUT:
 ```json
     {
@@ -73,8 +83,8 @@ INPUT:
         "evt_image":"none"
     }
 ```
-6. Test the API with POSTMAN. Example input for UPDATE EVENTS :
-* Set the URL TO `http://localhost:9999/run-model/update_events`
+Example input for UPDATE EVENTS :
+* Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/update_events`
 INPUT:
 ```json
     {
@@ -88,8 +98,8 @@ INPUT:
 ```
 In `field` attribute give the column name to identify the record to update. In `field_update` specify the column to be updated and give the new value to it.
 
-7. Test the API with POSTMAN. Example input for DELETE EVENTS :
-* Set the URL TO `http://localhost:9999/run-model/delete_events`
+Example input for DELETE EVENTS :
+* Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/delete_events`
 INPUT:
 ```json
     {
