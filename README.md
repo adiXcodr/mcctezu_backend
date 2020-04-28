@@ -120,6 +120,13 @@ INPUT:
     }
 ```
 
+Example for FETCH NOTIFICATIONS : 
+
+* Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/notifications/fetch`
+OR `https://mcctezu-backend.herokuapp.com/run-model/notifications/fetch/` to get all the records.
+* Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/notifications/fetch/<_id>` to get record for specified notification by id.
+
+
 Example input for UPDATE NOTIFICATIONS :
 * Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/notifications/update` to Update Single Record 
 
@@ -135,7 +142,7 @@ INPUT:
 
 In `field` attribute give the column name to identify the record to update. In `update` specify the column to be updated and give the new value to it.
 
-Example input for UPDATE NOTIFICATIONS :
+Example input for DELETE NOTIFICATIONS :
 * Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/notifications/delete_one` to Delete Single Record OR
 Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/notifications/delete_many` to Delete More Than One Records
 INPUT:
