@@ -162,6 +162,33 @@ def add_notifications():
     response = jsonify({"status": status_response,"data":"No Data"})
     return response
 
+@bp.route("/notifications/fetch",methods = ["GET"])
+@bp.route("/notifications/fetch/",methods = ["GET"])
+def fetch_all():
+    notifications = const.mydb['notifications']
+    doc=[]
+    mydoc=notifications.find()
+    if(mydoc):
+        for x in mydoc:
+            doc.append(x)
+        status_response='Success'
+    else:
+        status_response='Faliure'
+    return jsonify({"status":status_response,"data":doc})
+
+@bp.route("/notifications/fetch/<_id>",methods = ["GET"])
+def fetch_id(_id):
+    notifications = const.mydb['notifications']
+    doc=[]
+    mydoc=notifications.find_one({"_id":int(_id)})
+    print(mydoc)
+    if(mydoc):
+        doc.append(mydoc)
+        status_response='Success'
+    else:
+        status_response='Faliure'
+    return jsonify({"status":status_response,"data":doc})
+    
 @bp.route("/notifications/delete_one",methods=["DELETE"])
 def delete_one():
     jn=request.json

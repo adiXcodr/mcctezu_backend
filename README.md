@@ -63,7 +63,7 @@ Example Input for delete members (Send ID):
         "_id": 1
     }
 ```
-
+***
 
 Example for GET EVENTS :  
 * Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/get_events`
@@ -108,6 +108,8 @@ INPUT:
 ```
 Specify the column to identify and delete the record.
 
+***
+
 Example input for ADD NOTIFICATIONS :
 * Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/notifications/add`
 INPUT:
@@ -120,6 +122,13 @@ INPUT:
     }
 ```
 
+Example for FETCH NOTIFICATIONS : 
+
+* Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/notifications/fetch`
+OR `https://mcctezu-backend.herokuapp.com/run-model/notifications/fetch/` to get all the records.
+* Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/notifications/fetch/<_id>` to get record for specified notification by id.
+
+
 Example input for UPDATE NOTIFICATIONS :
 * Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/notifications/update` to Update Single Record 
 
@@ -128,14 +137,14 @@ INPUT:
     {
         
         "_id": 3,
-       "title": "Notifications"//new data
+       "title": "NEW TITLE"
         
     }
 ```
 
 In `field` attribute give the column name to identify the record to update. In `update` specify the column to be updated and give the new value to it.
 
-Example input for UPDATE NOTIFICATIONS :
+Example input for DELETE NOTIFICATIONS :
 * Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/notifications/delete_one` to Delete Single Record OR
 Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/notifications/delete_many` to Delete More Than One Records
 INPUT:
