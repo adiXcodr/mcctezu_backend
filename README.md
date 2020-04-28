@@ -63,7 +63,7 @@ Example Input for delete members (Send ID):
         "_id": 1
     }
 ```
-
+***
 
 Example for GET EVENTS :  
 * Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/get_events`
@@ -107,6 +107,8 @@ INPUT:
     }
 ```
 Specify the column to identify and delete the record.
+
+***
 
 Example input for ADD NOTIFICATIONS :
 * Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/notifications/add`
