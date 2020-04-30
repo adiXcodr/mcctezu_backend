@@ -5,6 +5,33 @@ import constants as const
 bp = Blueprint("run_model", __name__)
 
 #-------------MEMBERS HANDLER ROUTES-------------------
+@bp.route("/get_members",methods = ["GET"])
+@bp.route("/get_members/",methods = ["GET"])
+def get_members():
+    coll = const.mydb['members']
+    member_list=[]
+    members_query=coll.find()
+    if(members_query):
+        for x in members_query:
+            if(x["_id"]!=None):
+                member_list.append(x)
+        status_response='Success'
+    else:
+        status_response='Faliure'
+    return jsonify({"status":status_response,"data":member_list})
+
+@bp.route("/get_members/<_id>",methods = ["GET"])
+def get_member(_id):
+    coll = const.mydb['members']
+    member_query=coll.find_one({"_id":int(_id)})
+    result="No Data"
+    if(member_query and member_query["_id"]!=None):
+        status_response='Success'
+        result=member_query
+    else:
+        status_response='Faliure'
+    return jsonify({"status":status_response,"data":result})
+
 
 @bp.route("/add_members",methods=["POST"])
 def handle_add_members():
@@ -170,7 +197,8 @@ def fetch_all():
     mydoc=notifications.find()
     if(mydoc):
         for x in mydoc:
-            doc.append(x)
+            if(x["_id"]!=None):
+                doc.append(x)
         status_response='Success'
     else:
         status_response='Faliure'
@@ -179,11 +207,11 @@ def fetch_all():
 @bp.route("/notifications/fetch/<_id>",methods = ["GET"])
 def fetch_id(_id):
     notifications = const.mydb['notifications']
-    doc=[]
+    doc="No Data"
     mydoc=notifications.find_one({"_id":int(_id)})
     print(mydoc)
     if(mydoc):
-        doc.append(mydoc)
+        doc=mydoc
         status_response='Success'
     else:
         status_response='Faliure'

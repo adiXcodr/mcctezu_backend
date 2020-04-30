@@ -41,6 +41,12 @@ Follow the steps for working on this repository strictly :
 2. With LIVE Heroku Server, eg: https://mcctezu-backend.herokuapp.com/run-model/add_members
 3. Test the API with POSTMAN. 
 
+Example for FETCH NOTIFICATIONS : 
+
+* Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/get_members` to get all the members.
+* Set the URL TO `https://mcctezu-backend.herokuapp.com/run-model/get_members/<_id>` to get a member for an ID.
+
+
 Example Input for add_members and edit members (ALL FIELDS MUST BE SENT):  
 
 ```json
