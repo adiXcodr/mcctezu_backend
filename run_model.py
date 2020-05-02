@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 import pymongo
 import constants as const
 bp = Blueprint("run_model", __name__)
-from app import bcrypt
+import app
 #-------------MEMBERS HANDLER ROUTES-------------------
 @bp.route("/get_members",methods = ["GET"])
 @bp.route("/get_members/",methods = ["GET"])
