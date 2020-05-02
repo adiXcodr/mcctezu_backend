@@ -1,9 +1,8 @@
 from flask import Blueprint, jsonify, request
 import pymongo
 import constants as const
-
 bp = Blueprint("run_model", __name__)
-
+from app import bcrypt
 #-------------MEMBERS HANDLER ROUTES-------------------
 @bp.route("/get_members",methods = ["GET"])
 @bp.route("/get_members/",methods = ["GET"])
@@ -260,3 +259,28 @@ def update():
     else:
         return jsonify({"status":"No Record Found"})
         
+#-------------------ADMIN HANDLER ROUTES-------------------
+@bp.route("/admin-add",methods=['POST'])
+def admin_handler():
+    admin=const.mydb.admin_credentials
+    username=request.json["username"]
+    pwd=request.json["password"]
+    hsh_pwd=bcrypt.generate_password_hash("pwd").decode("utf-8")
+    status_response=admin.insert_one({"username":username,"password":hsh_pwd})
+    if status_response:
+        status_response="Success"
+    else:
+        status_response="Failure"
+    return jsonify({"status":status_response,"result":"No Data"})
+@bp.route('/admin-view',methods=['GET'])
+def admin_view():
+    admin=const.mydb.admin_credentials
+    output=admin.find()
+    result=[]
+    if output:
+        status_response="Success"
+        for i in output:
+            result.append({"username":i["username"],"password":i["password"]})
+    else:
+        status_response="Failure"
+    return jsonify({"status":status_response,"result":result})
