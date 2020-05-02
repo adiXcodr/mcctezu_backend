@@ -22,6 +22,6 @@ if __name__ == "__main__":  #Local
     app.run(host="localhost", port="9999", debug=True, use_reloader=True)
 
     
-#else:     #Production (Heroku)
-#    port = int(os.environ.get('PORT', 33507))
-#    serve(app,port=port)
+else:     #Production (Heroku)
+    port = int(os.environ.get('PORT', 33507))
+    serve(app,port=port)
