@@ -1,4 +1,3 @@
-from flask_bcrypt import Bcrypt
 from flask import Flask, Blueprint,jsonify
 from flask_cors import CORS
 import pymongo
@@ -9,7 +8,6 @@ import os
 
 app = Flask(__name__)
 cors = CORS(app)
-bcrypt=Bcrypt(app)
 app.register_blueprint(run_model.bp, url_prefix='/run-model')
 
 # endpoint to check service status
@@ -21,6 +19,6 @@ def check_status():
 if __name__ == "__main__":  #Local
     app.run(host="localhost", port="9999", debug=True, use_reloader=True)
 
-#else:     #Production (Heroku)
-#    port = int(os.environ.get('PORT', 33507))
-#    serve(app,port=port)
+else:     #Production (Heroku)
+    port = int(os.environ.get('PORT', 33507))
+    serve(app,port=port)
