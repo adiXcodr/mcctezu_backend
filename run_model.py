@@ -101,7 +101,7 @@ def get_event_handler():
     output=[]
     if query:
         for i in query:
-            output.append({"evt_org":i["evt_org"],"evt_name":i["evt_name"],"evt_date":i["evt_date"],"evt_time":i["evt_time"],"evt_venue":i["evt_venue"],"evt_image":i["evt_image"]})
+            output.append({"id":i["id"],"evt_org":i["evt_org"],"evt_name":i["evt_name"],"evt_date":i["evt_date"],"evt_time":i["evt_time"],"evt_venue":i["evt_venue"],"evt_image":i["evt_image"]})
         status_response="Success"
     else:
         status_response="Failure"
@@ -115,7 +115,7 @@ def get_event_handler_dynamic(evt_name):
     output=[]
     if i:
         status_response='Success'
-        output.append({"evt_org":i["evt_org"],"evt_name":i["evt_name"],"evt_date":i["evt_date"],"evt_time":i["evt_time"],"evt_venue":i["evt_venue"],"evt_image":i["evt_image"]})
+        output.append({"id":i["id"],"evt_org":i["evt_org"],"evt_name":i["evt_name"],"evt_date":i["evt_date"],"evt_time":i["evt_time"],"evt_venue":i["evt_venue"],"evt_image":i["evt_image"]})
     else:
         status_response="Failure"
         output="No Data Found"
@@ -131,7 +131,18 @@ def add_events_handler():
         output="Record Already Present"
     else:
         output="No Data"
-        event_id=event.insert_one(q)
+        query=event.find()
+        if query is None:
+            id=1
+        else:
+            big=0
+            for x in query:
+                big=x["id"]
+                for y in query:
+                    if y["id"] > big:
+                        big=y['id'] 
+            id=big+1
+        event_id=event.insert_one({"id":id,"evt_name":q["evt_name"],"evt_org":q["evt_org"],"evt_date":q["evt_date"],"evt_time":q["evt_time"],"evt_venue":q["evt_venue"],"evt_image":q["evt_image"]})
         status_response=event_id.inserted_id
         if status_response:
             status_response="Success"
