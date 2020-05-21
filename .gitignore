@@ -1,2 +1,4 @@
 __pycache__/
 _config.yml
+venv/
+.vscode/
