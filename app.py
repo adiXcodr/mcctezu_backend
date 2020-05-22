@@ -5,10 +5,13 @@ import run_model
 import constants as CONST
 from waitress import serve
 import os
+from flask_pymongo import PyMongo
 
 app = Flask(__name__)
 cors = CORS(app)
 app.register_blueprint(run_model.bp, url_prefix='/run-model')
+app.config['MONGO_URI']='mongodb+srv://admin:nydqqzuy1324@cluster0-oobol.mongodb.net/test?retryWrites=true&w=majority'
+mongo=PyMongo(app)
 
 # endpoint to check service status
 @app.route("/status")

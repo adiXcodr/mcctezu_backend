@@ -1,8 +1,6 @@
 import pymongo
-from app import app
-from flask_pymongo import PyMongo
-app.config['MONGO_URI']='mongodb+srv://admin:nydqqzuy1324@cluster0-oobol.mongodb.net/test?retryWrites=true&w=majority'
-mongo=PyMongo(app)
+
+
 # Generic constants
 STATUS = 'status'
 SUCCESS = 'success'
