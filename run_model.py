@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify, request
 import pymongo
-import constants as const
 bp = Blueprint("run_model", __name__)
 from passlib.hash import pbkdf2_sha256
+import constants as const
 #-------------MEMBERS HANDLER ROUTES-------------------
 @bp.route("/get_members",methods = ["GET"])
 @bp.route("/get_members/",methods = ["GET"])
@@ -98,10 +98,12 @@ def handle_delete_members():
 def get_event_handler():
     event=const.mydb.events
     query=event.find()
+    user_agent='{}'. format(request.user_agent)
+    remote_user='{}'.format(request.remote_addr)
     output=[]
     if query:
         for i in query:
-            output.append({"id":i["id"],"evt_org":i["evt_org"],"evt_name":i["evt_name"],"evt_date":i["evt_date"],"evt_time":i["evt_time"],"evt_venue":i["evt_venue"],"evt_image":i["evt_image"]})
+            output.append({"id":i["id"],"evt_org":i["evt_org"],"evt_name":i["evt_name"],"evt_date":i["evt_date"],"evt_time":i["evt_time"],"evt_venue":i["evt_venue"],"evt_image":i["evt_image"],"remote_user":remote_user,"user_agent":user_agent})
         status_response="Success"
     else:
         status_response="Failure"
@@ -115,11 +117,16 @@ def get_event_handler_dynamic(evt_name):
     output=[]
     if i:
         status_response='Success'
-        output.append({"id":i["id"],"evt_org":i["evt_org"],"evt_name":i["evt_name"],"evt_date":i["evt_date"],"evt_time":i["evt_time"],"evt_venue":i["evt_venue"],"evt_image":i["evt_image"]})
+        img=const.mongo.db.test.find_one({"id":i["id"]})
+        output.append({"id":i["id"],"evt_org":i["evt_org"],"evt_name":i["evt_name"],"evt_date":i["evt_date"],"evt_time":i["evt_time"],"evt_venue":i["evt_venue"],"evt_image":i["evt_image"],"evt_image":i['evt_image']})
     else:
         status_response="Failure"
         output="No Data Found"
     return jsonify({"status":status_response,"result":output})
+#----------EVENT IMAGE------------
+@bp.route('/get-img/<filename>',methods=['GET'])
+def get_img(filename):
+    return const.mongo.send_file(filename)
 
 @bp.route('/add_events',methods=['POST'])
 def add_events_handler():
@@ -142,12 +149,24 @@ def add_events_handler():
                     if y["id"] > big:
                         big=y['id'] 
             id=big+1
-        event_id=event.insert_one({"id":id,"evt_name":q["evt_name"],"evt_org":q["evt_org"],"evt_date":q["evt_date"],"evt_time":q["evt_time"],"evt_venue":q["evt_venue"],"evt_image":q["evt_image"]})
-        status_response=event_id.inserted_id
-        if status_response:
-            status_response="Success"
-        else:
-            status_response="Failure"
+            if 'image' in request.files:
+                evt_image=request.files['image']
+                const.mongo.save_file(evt_image.filename,evt_image)
+                const.mongo.db.test.insert_one({"id":id,"image":evt_image.filename})
+                event_id=event.insert_one({"id":id,"evt_name":q["evt_name"],"evt_org":q["evt_org"],"evt_date":q["evt_date"],"evt_time":q["evt_time"],"evt_venue":q["evt_venue"],"evt_image":evt_image.filename})
+                status_response=event_id.inserted_id
+                if status_response:
+                    status_response="Success"
+                else:
+                    status_response="Failure"
+                return jsonify({"status": status_response,"result":output})
+            event_id=event.insert_one({"id":id,"evt_name":q["evt_name"],"evt_org":q["evt_org"],"evt_date":q["evt_date"],"evt_time":q["evt_time"],"evt_venue":q["evt_venue"],"evt_image":"-"})
+            status_response=event_id.inserted_id
+            if status_response:
+                status_response="Success"
+            else:
+                status_response="Failure"
+            return jsonify({"status": status_response,"result":output})
     return jsonify({"status": status_response,"result":output})
 
 @bp.route('/update_events',methods=['PUT'])
@@ -155,9 +174,17 @@ def update_event_handler():
     event=const.mydb.events
     field=request.json["field"]
     field_update=request.json['field_update']
-    if event.find_one(field):
+    file=request.files['image']
+    update_fields=event.find_one(field)
+    if update_fields:
         output="No Data"
         udt=event.update_one(field,{'$set':field_update})
+        if update_fields['evt_image']!=file.filename:
+            sts=const.mongo.db.test.delete_one(field)
+            if sts:
+                const.mongo.save_file(file)
+                const.mongo.db.test.insert_one({"id":update_fields['id'],"image":file.filename})
+                udt=event.update_one(field,{'$set':{"evt_image":file.filename}})
         if udt:
             status_response="Success"
         else:
@@ -171,10 +198,12 @@ def update_event_handler():
 def delete_event_handler():
     event=const.mydb.events
     q=request.json
-    if event.find_one(q):
+    record=event.find_one(q)
+    if record:
+        dlt_db2=const.mongo.db.test.delete_one({"id":record['id']})
         dlt=event.delete_one(q)
         output='No Data'
-        if dlt:
+        if dlt & dlt_db2:
             status_response="Success"
         else:
             status_response="Failure"
@@ -196,8 +225,7 @@ def add_notifications():
         status_response='Success'
     else:
         status_response='Failure'
-    response = jsonify({"status": status_response,"data":"No Data"})
-    return response
+    return jsonify({"status": status_response,"data":"No Data"})
 
 @bp.route("/notifications/fetch",methods = ["GET"])
 @bp.route("/notifications/fetch/",methods = ["GET"])
@@ -234,12 +262,12 @@ def delete_one():
     if(notifications.find_one(jn)):
         status_response = notifications.delete_one(jn)
         if(status_response):
-            status_response="Deleted"
+            status_response="Success"
         else:
             status_response="Failure"
-        return jsonify({"status":status_response,"data":"nodata"})
     else:
-        return jsonify({"status":"No Record Found"})
+        status_response="Failure"
+    return jsonify({"status":status_response,"data":"No Data"})
 
 @bp.route("/notifications/delete_many",methods=["DELETE"])
 def delete_many():
@@ -248,13 +276,12 @@ def delete_many():
     if(notifications.find_one(jn)):
         status_response = notifications.delete_many(jn)
         if(status_response):
-            status_response="Deleted"
+            status_response="Success"
         else:
             status_response="Failure"
-        return jsonify({"status":status_response,"data":"nodata"})
     else:
-        return jsonify({"status":"No Record Found"})
-
+        status_response="Failure"
+    return jsonify({"status":status_response,"data":"No Data"})
 
 @bp.route("/notifications/update",methods=["PUT"])
 def update():
@@ -266,9 +293,9 @@ def update():
             status_response="Updated"
         else:
             status_response="Failure"
-        return jsonify({"status":status_response,"data":"nodata"})
     else:
-        return jsonify({"status":"No Record Found"})
+        status_response="Failure"
+    return jsonify({"status":status_response,"data":"No Data"})
         
 #-------------------ADMIN HANDLER ROUTES-------------------
 @bp.route("/admin-add",methods=['POST'])
