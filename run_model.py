@@ -290,7 +290,7 @@ def update():
     if(notifications.find_one({"_id":field["_id"]})):
         status_response = notifications.update_one({"_id":field["_id"]},{"$set":field})
         if(status_response):
-            status_response="Updated"
+            status_response="Success"
         else:
             status_response="Failure"
     else:
