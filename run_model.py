@@ -200,10 +200,9 @@ def delete_event_handler():
     q=request.json
     record=event.find_one(q)
     if record:
-        dlt_db2=const.mongo.db.test.delete_one({"id":record['id']})
         dlt=event.delete_one(q)
         output='No Data'
-        if dlt & dlt_db2:
+        if dlt:
             status_response="Success"
         else:
             status_response="Failure"
@@ -290,7 +289,7 @@ def update():
     if(notifications.find_one({"_id":field["_id"]})):
         status_response = notifications.update_one({"_id":field["_id"]},{"$set":field})
         if(status_response):
-            status_response="Updated"
+            status_response="Success"
         else:
             status_response="Failure"
     else:
@@ -319,7 +318,7 @@ def admin_view():
     if output:
         status_response="Success"
         for i in output:
-            result.append({"username":i["username"],"password":i["password"],"fullname":i["fullname"]})
+            result.append({"username":i["username"],"fullname":i["fullname"]})
     else:
         status_response="Failure"
     return jsonify({"status":status_response,"result":result})
@@ -330,7 +329,20 @@ def admin_view_dynamic(user):
     output=admin.find_one({"username":user})
     result=[]
     if output:
-        result.append({"username":output["username"],"password":output["password"],"fullname":output["fullname"]})
+        result.append({"username":output["username"],"fullname":output["fullname"]})
+        status_response="Success"
+    else:
+        status_response="Failure"
+        result="No Data"
+    return jsonify({"status":status_response,"result":result})
+
+@bp.route('/admin-view-check/<user>',methods=['GET'])
+def admin_view_check(user):
+    admin=const.mydb.admin_credentials
+    output=admin.find_one({"username":user})
+    result=[]
+    if output:
+        result.append({"username":output["username"],"password":output["password"]})
         status_response="Success"
     else:
         status_response="Failure"
