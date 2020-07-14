@@ -174,17 +174,10 @@ def update_event_handler():
     event=const.mydb.events
     field=request.json["field"]
     field_update=request.json['field_update']
-    file=request.files['image']
     update_fields=event.find_one(field)
     if update_fields:
         output="No Data"
         udt=event.update_one(field,{'$set':field_update})
-        if update_fields['evt_image']!=file.filename:
-            sts=const.mongo.db.test.delete_one(field)
-            if sts:
-                const.mongo.save_file(file)
-                const.mongo.db.test.insert_one({"id":update_fields['id'],"image":file.filename})
-                udt=event.update_one(field,{'$set':{"evt_image":file.filename}})
         if udt:
             status_response="Success"
         else:
