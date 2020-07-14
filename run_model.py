@@ -93,8 +93,8 @@ def handle_delete_members():
 
 #-------------EVENTS HANDLER ROUTES-------------------
 
-@bp.route('/get_events',methods=['GET'])
-@bp.route('/get_events/',methods=['GET'])
+@bp.route('/event',methods=['GET'])
+@bp.route('/event/',methods=['GET'])
 def get_event_handler():
     event=const.mydb.events
     query=event.find()
@@ -110,7 +110,7 @@ def get_event_handler():
         output="No Record Found"
     return jsonify({"status":status_response,"result":output})
 
-@bp.route('/get_events/<evt_name>',methods=['GET'])
+@bp.route('/events/<evt_name>',methods=['GET'])
 def get_event_handler_dynamic(evt_name):
     event=const.mydb.events
     i=event.find_one({"evt_name":evt_name})
@@ -123,12 +123,8 @@ def get_event_handler_dynamic(evt_name):
         status_response="Failure"
         output="No Data Found"
     return jsonify({"status":status_response,"result":output})
-#----------EVENT IMAGE------------
-@bp.route('/get-img/<filename>',methods=['GET'])
-def get_img(filename):
-    return const.mongo.send_file(filename)
 
-@bp.route('/add_events',methods=['POST'])
+@bp.route('/event',methods=['POST'])
 def add_events_handler():
     event=const.mydb.events
     q=request.json
@@ -169,7 +165,7 @@ def add_events_handler():
             return jsonify({"status": status_response,"result":output})
     return jsonify({"status": status_response,"result":output})
 
-@bp.route('/update_events',methods=['PUT'])
+@bp.route('/event',methods=['PUT'])
 def update_event_handler():
     event=const.mydb.events
     field=request.json["field"]
