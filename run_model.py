@@ -110,7 +110,7 @@ def get_event_handler():
         output="No Record Found"
     return jsonify({"status":status_response,"result":output})
 
-@bp.route('/events/<evt_name>',methods=['GET'])
+@bp.route('/event/<evt_name>',methods=['GET'])
 def get_event_handler_dynamic(evt_name):
     event=const.mydb.events
     i=event.find_one({"evt_name":evt_name})
@@ -183,7 +183,7 @@ def update_event_handler():
         output="Record Not Found"
     return jsonify({"status":status_response,"result":output})
 
-@bp.route('/delete_events',methods=['DELETE'])
+@bp.route('/event',methods=['DELETE'])
 def delete_event_handler():
     event=const.mydb.events
     q=request.json
