@@ -7,7 +7,7 @@
 * FLASK
 
 ### Live Server Status
-https://mcctezu-backend.herokuapp.com/status
+http://mozcctuapi.herokuapp.com/status
 
 
 ### Github Steps
